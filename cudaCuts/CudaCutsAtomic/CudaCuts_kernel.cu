@@ -1010,14 +1010,10 @@ kernel_End( int * g_stochastic, int * g_count_blocks, int g_counter)
 }
 
 __global__ void
-kernel_push1_start_atomic( int * g_left_weight, int * g_right_weight,
-                           int * g_down_weight, int * g_up_weight,
-                           int * g_sink_weight, int * g_push_reser,
-                           int * g_relabel_mask, int * g_graph_height,
-                           int * g_height_write, int graph_size, int width,
-                           int rows, int graph_size1, int width1, int rows1,
-                           int d_relabel, int * d_stochastic, int d_counter,
-                           bool * d_finish)
+kernel_push1_start_atomic( int *g_left_weight, int *g_right_weight,int *g_down_weight, int *g_up_weight,
+                           int *g_sink_weight, int *g_push_reser,
+						   int *g_relabel_mask, int *g_graph_height, int *g_height_write, 
+						   int graph_size, int width ,int rows, int graph_size1, int width1, int rows1, int *d_relabel, int *d_stochastic, int* d_counter, bool *d_finish)
 {
   /*
     if (threadIdx.x == 0) {

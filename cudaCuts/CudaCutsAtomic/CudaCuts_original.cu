@@ -487,10 +487,10 @@ kernel_push2_atomic( int *g_left_weight, int *g_right_weight, int *g_down_weight
 }
 
 __global__ void
-kernel_End( int *g_stochastic, int *g_count_blocks, int *g_counter)
+kernel_End( int *g_stochastic, int *g_count_blocks, int g_counter)
 {
 	int thid = blockIdx.x * blockDim.x + threadIdx.x ; 
-	if( thid < ( *g_counter ) )
+	if( thid < (g_counter ) )
 	{
 		if( g_stochastic[thid] == 1 )
 			atomicAdd(g_count_blocks,1);
@@ -503,7 +503,7 @@ __global__ void
 kernel_push1_start_atomic( int *g_left_weight, int *g_right_weight, int *g_down_weight, int *g_up_weight,
 		int *g_sink_weight, int *g_push_reser, 
 		int *g_relabel_mask, int *g_graph_height, int *g_height_write,
-		int graph_size, int width, int rows, int graph_size1, int width1, int rows1, int *d_relabel, int *d_stochastic, int *d_counter, bool *d_finish)
+		int graph_size, int width, int rows, int graph_size1, int width1, int rows1, int *d_relabel, int *d_stochastic, int d_counter, bool *d_finish)
 {
 		int x1 = threadIdx.x ;
 		int y1 = threadIdx.y ;
@@ -961,7 +961,7 @@ kernel_bfs_t(int *g_push_reser, int  *g_sink_weight, int *g_graph_height, bool *
 		
 
 __global__ void
-kernel_push_stochastic1( int *g_push_reser, int *s_push_reser, int *g_count_blocks, bool *g_finish, int *g_block_num, int width1)
+kernel_push_stochastic1( int *g_push_reser, int *s_push_reser, int *g_count_blocks, bool *g_finish, int g_block_num, int width1)
 {
 	int x  = __umul24( blockIdx.x, blockDim.x ) + threadIdx.x ;
 	int y  = __umul24( blockIdx.y , blockDim.y ) + threadIdx.y ;
@@ -976,7 +976,7 @@ kernel_push_stochastic1( int *g_push_reser, int *s_push_reser, int *g_count_bloc
 }
 
 __global__ void
-kernel_push_stochastic2( int *g_push_reser, int *s_push_reser, int *d_stochastic, int *g_block_num, int width1)
+kernel_push_stochastic2( int *g_push_reser, int *s_push_reser, int *d_stochastic, int g_block_num, int width1)
 {
 
 	int x  = __umul24( blockIdx.x, blockDim.x ) + threadIdx.x ;
@@ -988,7 +988,7 @@ kernel_push_stochastic2( int *g_push_reser, int *s_push_reser, int *d_stochastic
 	stochastic = ( s_push_reser[thid] - g_push_reser[thid]) ;
 	if(stochastic != 0)
 	{
-		d_stochastic[blockIdx.y * (*g_block_num) + blockIdx.x] = 1 ;
+		d_stochastic[blockIdx.y * (g_block_num) + blockIdx.x] = 1 ;
 	}
 }
 
@@ -998,7 +998,7 @@ __global__ void
 kernel_push1_start_stochastic( int *g_left_weight, int *g_right_weight, int *g_down_weight, int *g_up_weight,
 		int *g_sink_weight, int *g_push_reser,
 		int *g_relabel_mask, int *g_graph_height, int *g_height_write,
-		int graph_size, int width, int rows, int graph_size1, int width1, int rows1, int *d_relabel, int *d_stochastic, int *d_counter, bool *d_finish)
+		int graph_size, int width, int rows, int graph_size1, int width1, int rows1, int *d_relabel, int *d_stochastic, int d_counter, bool *d_finish)
 {
 	int x1 = threadIdx.x ;
 	int y1 = threadIdx.y ;
