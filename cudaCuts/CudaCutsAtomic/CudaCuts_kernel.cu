@@ -978,7 +978,7 @@ kernel_push2_atomic( int * g_left_weight, int * g_right_weight,
 }
 
 __global__ void
-kernel_End( int * g_stochastic, int * g_count_blocks, int g_counter)
+kernel_End( int * g_stochastic, int * g_count_blocks, int* g_counter)
 {
   /*
   if (threadIdx.x == 0) {
@@ -991,7 +991,7 @@ kernel_End( int * g_stochastic, int * g_count_blocks, int g_counter)
   __syncthreads();
 */
   int thid = blockIdx.x * blockDim.x + threadIdx.x; 
-  if( thid < g_counter )
+  if( thid < *g_counter )
   {
     if( g_stochastic[thid] == 1 ) {
       atomicAdd(g_count_blocks,1);
