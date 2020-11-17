@@ -1194,15 +1194,16 @@ kernel_push1_stochastic( int * g_left_weight, int * g_right_weight,
         temp_weight = temp_weight - min_flow_pushed;
         neg_min_flow_pushed = 0 - min_flow_pushed;
 
-        /*
+        
         atomicSub(&g_left_weight[thid], min_flow_pushed);
         atomicAdd(&g_right_weight[thid-1],min_flow_pushed);
         atomicSub(&g_push_reser[thid], min_flow_pushed);
         atomicAdd(&g_push_reser[thid-1], min_flow_pushed);
-        */
+        
         // ** NOTE: Across all of the inlined assembly blocks we can't reuse the
         // same temp reg names
-        asm volatile(// Temp Registers
+		/*
+		asm volatile(// Temp Registers
                      ".reg .s32 n0;\n\t"    // temp reg n0 (min_flow_pushed)
                      ".reg .s32 n1;\n\t"    // temp reg n1 (negative min_flow_pushed)
                      ".reg .s32 n2;\n\t"    // temp reg n2 (atomicSub(leftWeightTidAddr) result)
@@ -1222,7 +1223,8 @@ kernel_push1_stochastic( int * g_left_weight, int * g_right_weight,
                         "l"(leftWeightTidAddr), "l"(rightWeightTidMinus1Addr),
                         "l"(pushTidAddr), "l"(pushTidMinus1Addr)
                      );
-      } else {
+	  */
+					} else {
         atomicSub(&g_pull_left[thid-1], 1);
       }
 
@@ -1238,15 +1240,16 @@ kernel_push1_stochastic( int * g_left_weight, int * g_right_weight,
         temp_weight = temp_weight - min_flow_pushed;
         neg_min_flow_pushed = 0 - min_flow_pushed;
 
-        /*
+        
         atomicSub(&g_up_weight[thid], min_flow_pushed);
         atomicAdd(&g_down_weight[thid-width1],min_flow_pushed);
         atomicSub(&g_push_reser[thid], min_flow_pushed);
         atomicAdd(&g_push_reser[thid-width1], min_flow_pushed);
-        */
+        
         // ** NOTE: Across all of the inlined assembly blocks we can't reuse the
         // same temp reg names
-        asm volatile(// Temp Registers
+		/*
+		asm volatile(// Temp Registers
                      ".reg .s32 o0;\n\t"    // temp reg o0 (min_flow_pushed)
                      ".reg .s32 o1;\n\t"    // temp reg o1 (negative min_flow_pushed)
                      ".reg .s32 o2;\n\t"    // temp reg o2 (atomicSub(upWeightTidAddr) result)
@@ -1266,7 +1269,8 @@ kernel_push1_stochastic( int * g_left_weight, int * g_right_weight,
                         "l"(upWeightTidAddr), "l"(downWeightTidMinusWidth1Addr),
                         "l"(pushTidAddr), "l"(pushTidMinusWidth1Addr)
                      );
-      } else {
+	  */
+					} else {
         atomicSub(&g_pull_up[thid - width1], 1);
       }
 
@@ -1282,15 +1286,16 @@ kernel_push1_stochastic( int * g_left_weight, int * g_right_weight,
         temp_weight = temp_weight - min_flow_pushed;
         neg_min_flow_pushed = 0 - min_flow_pushed;
 
-        /*
-        atomicSub(&g_right_weight[thid], min_flow_pushed);
+		
+		atomicSub(&g_right_weight[thid], min_flow_pushed);
         atomicAdd(&g_left_weight[thid+1],min_flow_pushed);
         atomicSub(&g_push_reser[thid], min_flow_pushed);
         atomicAdd(&g_push_reser[thid+1], min_flow_pushed);
-        */
+        
         // ** NOTE: Across all of the inlined assembly blocks we can't reuse the
         // same temp reg names
-        asm volatile(// Temp Registers
+		/*
+		asm volatile(// Temp Registers
                      ".reg .s32 q0;\n\t"    // temp reg q0 (min_flow_pushed)
                      ".reg .s32 q1;\n\t"    // temp reg q1 (negative min_flow_pushed)
                      ".reg .s32 q2;\n\t"    // temp reg q2 (atomicSub(rightWeightTidAddr) result)
@@ -1310,7 +1315,8 @@ kernel_push1_stochastic( int * g_left_weight, int * g_right_weight,
                         "l"(rightWeightTidAddr), "l"(leftWeightTidPlus1Addr),
                         "l"(pushTidAddr), "l"(pushTidPlus1Addr)
                      );
-      } else {
+	  */
+					} else {
         atomicSub( &g_pull_right[thid + 1], 1);
       }
 
@@ -1326,15 +1332,16 @@ kernel_push1_stochastic( int * g_left_weight, int * g_right_weight,
         temp_weight = temp_weight - min_flow_pushed;
         neg_min_flow_pushed = 0 - min_flow_pushed;
 
-        /*
+        
         atomicSub(&g_down_weight[thid], min_flow_pushed);
         atomicAdd(&g_up_weight[thid+width1], min_flow_pushed);
         atomicSub(&g_push_reser[thid], min_flow_pushed);
         atomicAdd(&g_push_reser[thid+width1], min_flow_pushed);
-        */
+        
         // ** NOTE: Across all of the inlined assembly blocks we can't reuse the
         // same temp reg names
-        asm volatile(// Temp Registers
+		/*
+		asm volatile(// Temp Registers
                      ".reg .s32 s0;\n\t"    // temp reg s0 (min_flow_pushed)
                      ".reg .s32 s1;\n\t"    // temp reg s1 (negative min_flow_pushed)
                      ".reg .s32 s2;\n\t"    // temp reg s2 (atomicSub(downWeightTidAddr) result)
@@ -1354,12 +1361,13 @@ kernel_push1_stochastic( int * g_left_weight, int * g_right_weight,
                         "l"(downWeightTidAddr), "l"(upWeightTidPlusWidth1Addr),
                         "l"(pushTidAddr), "l"(pushTidPlusWidth1Addr)
                      );
-      } else {
+	  */
+		} else {
         atomicSub( &g_pull_down[thid+width1], 1);
       }
     }
   }
-
+/*
   if (threadIdx.x == 0) {
     // all of the arrays accessed in this kernel are either in the read-only region,
     // special region or the relaxed atomic region
@@ -1367,6 +1375,7 @@ kernel_push1_stochastic( int * g_left_weight, int * g_right_weight,
     __denovo_gpuEpilogue(RELAX_ATOM_REGION);
     __denovo_gpuEpilogue(READ_ONLY_REGION);
   }
+ */ 
 }
 
 // ** UNUSED ...?
