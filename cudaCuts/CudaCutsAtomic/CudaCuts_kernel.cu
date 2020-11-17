@@ -159,7 +159,7 @@ kernel_push1_atomic( int *g_left_weight, int *g_right_weight,
                         "l"(leftWeightTidAddr), "l"(rightWeightTidMinus1Addr),
                         "l"(pushTidAddr), "l"(pushTidMinus1Addr)
                      );
-					*/					} 
+					*/					
 					}else {
         atomicSub(&g_pull_left[thid-1], 1);
       }
