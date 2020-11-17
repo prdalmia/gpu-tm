@@ -135,7 +135,7 @@ kernel_push1_atomic( int *g_left_weight, int *g_right_weight,
         atomicAdd(&g_right_weight[thid-1],min_flow_pushed);
         atomicSub(&g_push_reser[thid], min_flow_pushed);
         atomicAdd(&g_push_reser[thid-1], min_flow_pushed);
-      }
+      
         // ** NOTE: Across all of the inlined assembly blocks we can't reuse the
         // same temp reg names
         /*
