@@ -1913,7 +1913,7 @@ kernel_bfs_t(int *g_push_reser, int  *g_sink_weight, int *g_graph_height,
 }
 
 __global__ void
-kernel_push_stochastic1( int *g_push_reser, int *s_push_reser, int *g_count_blocks, bool *g_finish, int g_block_num, int width1)
+kernel_push_stochastic1( int *g_push_reser, int *s_push_reser, int *g_count_blocks, bool *g_finish, int *g_block_num, int width1)
 {
   /*
   if (threadIdx.x == 0) {
@@ -1949,7 +1949,7 @@ kernel_push_stochastic1( int *g_push_reser, int *s_push_reser, int *g_count_bloc
 
 __global__ void
 kernel_push_stochastic2( int *g_push_reser, int *s_push_reser,
-                         int *d_stochastic, int g_block_num, int width1)
+                         int *d_stochastic, int *g_block_num, int width1)
 {
   /*
   if (threadIdx.x == 0) {
@@ -1971,7 +1971,7 @@ kernel_push_stochastic2( int *g_push_reser, int *s_push_reser,
   stochastic = ( s_push_reser[thid] - atomicAdd(&g_push_reser[thid], 0));
   if(stochastic != 0)
   {
-    d_stochastic[blockIdx.y * g_block_num + blockIdx.x] = 1;
+    d_stochastic[blockIdx.y * (*g_block_num) + blockIdx.x] = 1;
   }
 /*
   if (threadIdx.x == 0) {
