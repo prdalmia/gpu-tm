@@ -1913,9 +1913,7 @@ kernel_bfs_t(int *g_push_reser, int  *g_sink_weight, int *g_graph_height,
 }
 
 __global__ void
-kernel_push_stochastic1( int *g_push_reser, int *s_push_reser,
-                         int *g_count_blocks, bool *g_finish, int g_block_num,
-                         int width1)
+kernel_push_stochastic1( int *g_push_reser, int *s_push_reser, int *g_count_blocks, bool *g_finish, int g_block_num, int width1)
 {
   /*
   if (threadIdx.x == 0) {
