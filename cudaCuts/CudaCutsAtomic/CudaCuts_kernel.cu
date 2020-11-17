@@ -404,7 +404,7 @@ kernel_relabel_stochastic( int *g_left_weight, int *g_right_weight,
                            int *g_relabel_mask, int *g_graph_height,
                            int *g_height_write, int graph_size, int width,
                            int rows, int graph_size1, int width1, int rows1,
-                           int *d_stochastic, int g_block_num )
+                           int *d_stochastic, int *g_block_num )
 {
   /*
   if (threadIdx.x == 0) {
@@ -416,7 +416,7 @@ kernel_relabel_stochastic( int *g_left_weight, int *g_right_weight,
   }
   __syncthreads();
 */
-  if(d_stochastic[blockIdx.y * g_block_num + blockIdx.x] == 1 )
+  if(d_stochastic[blockIdx.y * (*g_block_num) + blockIdx.x] == 1 )
   {
     int x1 = threadIdx.x;
     int y1 = threadIdx.y;
@@ -1107,7 +1107,7 @@ kernel_push1_stochastic( int * g_left_weight, int * g_right_weight,
                          int * g_relabel_mask, int * g_graph_height,
                          int * g_height_write, int graph_size, int width,
                          int rows, int graph_size1, int width1, int rows1,
-                         int * d_stochastic, int g_block_num )
+                         int * d_stochastic, int* g_block_num )
 {
   /*
   if (threadIdx.x == 0) {
@@ -1119,7 +1119,7 @@ kernel_push1_stochastic( int * g_left_weight, int * g_right_weight,
   }
   __syncthreads();
 */
-  if(d_stochastic[blockIdx.y * g_block_num + blockIdx.x] == 1 )
+  if(d_stochastic[blockIdx.y * (*g_block_num) + blockIdx.x] == 1 )
   {
     int x1 = threadIdx.x;
     int y1 = threadIdx.y;
@@ -2081,7 +2081,7 @@ __global__ void
 kernel_bfs(int *g_left_weight, int *g_right_weight, int *g_down_weight,
            int *g_up_weight, int *g_graph_height, bool *g_pixel_mask,
            int vertex_num, int width, int height, int vertex_num1, int width1,
-           int height1, bool *g_over, int g_counter)
+           int height1, bool *g_over, int* g_counter)
 {
   /*
   if (threadIdx.x == 0) {
@@ -2110,16 +2110,16 @@ kernel_bfs(int *g_left_weight, int *g_right_weight, int *g_down_weight,
       height_d = g_graph_height[thid+width1];
       height_u = g_graph_height[thid-width1];
 
-      if(((height_l == g_counter &&
+      if(((height_l == (*g_counter) &&
            /*g_right_weight[thid-1]*/atomicAdd(&g_right_weight[thid-1], 0) > 0)) ||
-         ((height_d == g_counter &&
+         ((height_d == (*g_counter) &&
            /*g_up_weight[thid+width1]*/atomicAdd(&g_up_weight[thid+width1], 0) > 0) ||
-          ( height_r == g_counter &&
+          ( height_r == (*g_counter) &&
             /*g_left_weight[thid+1]*/atomicAdd(&g_left_weight[thid+1], 0) > 0 ) ||
-          ( height_u == g_counter &&
+          ( height_u == (*g_counter) &&
             /*g_down_weight[thid-width1]*/atomicAdd(&g_down_weight[thid-width1], 0) > 0 ) ))
       {
-        g_graph_height[thid] = g_counter + 1;
+        g_graph_height[thid] = (*g_counter) + 1;
         g_pixel_mask[thid] = false;
         *g_over = true;
       }
