@@ -1,0 +1,54 @@
+== Overview ==
+
+These TM benchmarks generally requires the special version of GPGPU-Sim that
+supports the __tbegin() and __tcommit() intrinsics.  You may also run the
+non-TM version of the benchmarks on unmodified version of GPGPU-Sim and on
+hardware GPUs.  
+
+Notice that Cloth Simulation (CL in Kilo TM paper) is not available due to
+licensing issues. 
+
+== Compilation == 
+
+To compile the benchmarks, all you need is to run at this directory: 
+
+  make gputm
+
+You may want to edit BINDIR inside path_setup.mk to define where the compiled
+executables should be located. 
+
+To clean the build, run:
+
+  make clean_gputm
+
+== List of benchmarks and commands to run them == 
+
+Note: <data dir> is the sub-directory in each benchmark directory that contains
+the data input for the benchmark. 
+
+TM_Apriori2 (AP in Kilo TM paper): 
+- Use the following command to run the benchmark 
+  (run aprioriAtomic for the fine-grained lock version):
+  aprioriTM -i <data dir>/data.ntrans_1.tlen_10.nitems_.5.npats_2000.patlen_6 -s0.0075 -n112 -x64
+
+barneshut (BH in Kilo TM paper):
+- Use the following command to run the benchmark 
+  (remove -tm to run the fine-grained lock version):
+  barneshut 30000 1 -tm 
+
+cudaCuts (CC in Kilo TM paper): 
+- Use the following command to run the benchmark 
+  (run cudaCutsAtomic for the fine-grained lock version):
+  cudaCutsTM <data dir>/flower3.txt
+
+hashtable (HT in Kilo TM paper): 
+- Use the following command to run the benchmark 
+  (remove -tm to run the fine-grained lock version):
+  hashtable -hashEntries=8192 -tm 
+- For the low contention run, use 80000 for -hashEntries. 
+
+interac (ATM in Kilo TM paper): 
+- Use the following command to run the benchmark 
+  (remove -tm to run the fine-grained lock version):
+  interac -tm 
+
