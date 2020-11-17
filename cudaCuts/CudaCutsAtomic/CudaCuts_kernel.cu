@@ -294,8 +294,8 @@ kernel_push1_atomic( int *g_left_weight, int *g_right_weight,
                         "l"(downWeightTidAddr), "l"(upWeightTidPlusWidth1Addr),
                         "l"(pushTidAddr), "l"(pushTidPlusWidth1Addr)
                      );
-      } 
-      */
+	  */
+					} 
       else {
         atomicSub( &g_pull_down[thid+width1], 1);
       }
